@@ -1,0 +1,9 @@
+{
+  "name": "saxon",
+  "version": "0.0.0",
+  "main": "js/index",
+  "scripts": {
+    "build": "coffee-build src -o js",
+    "prepublishOnly": "prepv -i || true"
+  }
+}
