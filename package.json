@@ -5,5 +5,12 @@
   "scripts": {
     "build": "coffee-build src -o js",
     "prepublishOnly": "prepv -i || true"
+  },
+  "dependencies": {
+    "graceful-fs": "^4.1.11"
+  },
+  "devDependencies": {
+    "coffeescript": "^2.3.0",
+    "wch-coffee": "^0.2.0"
   }
 }
