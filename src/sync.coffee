@@ -1,10 +1,19 @@
 {S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
-{lstatSync, readdirSync, readlinkSync} = require 'fs'
+{lstatSync, readdirSync, readlinkSync, readFileSync} = require 'fs'
 errno = require './errno'
 path = require 'path'
 os = require 'os'
 
 fs = exports
+
+fs.read = (name, enc) ->
+  name = resolve name
+  if !mode = getMode name
+    uhoh "Path does not exist: '#{name}'", 'NOT_REAL'
+  if mode is S_IFDIR
+    uhoh "Path is not readable: '#{name}'", 'NOT_FILE'
+  enc = "utf8" if enc is undefined
+  readFileSync name, enc
 
 fs.list = (name) ->
   name = resolve name

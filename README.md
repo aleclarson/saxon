@@ -33,6 +33,7 @@ It throws a `NOT_REAL` error if a resolved path does not exist.
 const fs = require('saxon/sync');
 ```
 
+- `read(name, enc)` Read an entire file into memory
 - `list(name)` Get the array of paths in a directory
 - `follow(name, recursive)` Resolve a symlink
 - `isFile(name)`
