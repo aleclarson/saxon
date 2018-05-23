@@ -1,5 +1,5 @@
 {S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
-{lstatSync, readdirSync} = require 'fs'
+{lstatSync, readdirSync, readlinkSync} = require 'fs'
 errno = require './errno'
 path = require 'path'
 os = require 'os'
@@ -13,6 +13,14 @@ fs.list = (name) ->
   if mode isnt S_IFDIR
     uhoh "Path is not a directory: '#{name}'", 'NOT_DIR'
   readdirSync name
+
+fs.follow = (name, recursive) ->
+  name = resolve name
+  if !mode = getMode name
+    uhoh "Path does not exist: '#{name}'", 'NOT_REAL'
+  if mode is S_IFLNK
+    follow name, recursive
+  else name
 
 fs.isFile = (name) ->
   getMode(resolve(name)) is S_IFREG
@@ -35,6 +43,37 @@ resolve = (name) ->
 getMode = (name) ->
   try lstatSync(name).mode & S_IFMT
   catch e then null
+
+# Recursive symlink resolution
+follow = (link, recursive) ->
+  name = link
+  reads = 0
+
+  if typeof recursive is 'function'
+    validate = recursive
+    recursive = true
+
+  while ++reads
+    prev = name
+    name = readlinkSync prev
+
+    if !path.isAbsolute name
+      name = path.resolve path.dirname(prev), name
+
+    if validate and !validate name
+      return prev
+
+    if !recursive
+      return name
+
+    if !mode = getMode name
+      uhoh "Symlink leads nowhere: '#{link}'", 'NOT_REAL'
+
+    if mode isnt S_IFLNK
+      return name
+
+    if reads is 10
+      uhoh "Too many symlinks: '#{link}'", 'LINK_LIMIT'
 
 # Expose error codes.
 do ->

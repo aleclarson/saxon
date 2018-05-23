@@ -5,6 +5,7 @@ Modern filesystem library.
 - Paths are relative to the working directory (if not absolute)
 - Paths starting with `~/` are resolved relative to `os.homedir()`
 - Error codes are exposed to the user (eg: `fs.NOT_REAL`)
+- Functions available in both APIs behave identically
 
 🚧 *Under construction*
 
@@ -33,6 +34,7 @@ const fs = require('saxon/sync');
 ```
 
 - `list(name)` Get the array of paths in a directory
+- `follow(name, recursive)` Resolve a symlink
 - `isFile(name)`
 
 The `list` function throws a `NOT_REAL` error if the given path does not exist.
