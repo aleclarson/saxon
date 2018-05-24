@@ -3,3 +3,4 @@ module.exports =
   NOT_FILE: 2       # not a file
   NOT_DIR: 3        # not a directory
   LINK_LIMIT: 4     # too many symlinks (possibly circular)
+  PATH_EXISTS: 5    # path already exists

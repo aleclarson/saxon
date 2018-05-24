@@ -17,6 +17,7 @@ const fs = require('saxon');
 - `follow(name, recursive)` Resolve a symlink
 - `isFile(name)`
 - `isDir(name)`
+- `mkdir(name)` Create a directory
 
 The `read` function takes a path or file descriptor as its first argument.
 The data encoding defaults to `"utf8"`.
@@ -28,6 +29,9 @@ Pass `true` as the second argument to automatically follow a chain of symlinks u
 Pass a function as the second argument to be called for every resolved path. Your function must return a boolean, where `false` forces the result to be the previous path.
 It throws a `LINK_LIMIT` error if the real path cannot be resolved within 10 reads.
 It throws a `NOT_REAL` error if a resolved path does not exist.
+
+The `mkdir` function recursively creates any missing parent directories.
+It throws a `PATH_EXISTS` error if the path (or one of its parents) already exists and isn't a directory.
 
 ## Blocking API
 
@@ -42,4 +46,3 @@ const fs = require('saxon/sync');
 
 The `list` function throws a `NOT_REAL` error if the given path does not exist.
 It throws a `NOT_DIR` error if the given path is not a directory.
-

@@ -1,5 +1,5 @@
+{lstat, mkdir, readlink, readFile} = require 'graceful-fs'
 {S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
-{lstat, readlink, readFile} = require 'graceful-fs'
 errno = require './errno'
 path = require 'path'
 os = require 'os'
@@ -28,6 +28,15 @@ fs.isFile = (name) ->
 
 fs.isDir = (name) ->
   (await getMode resolve name) is S_IFDIR
+
+fs.mkdir = (name) ->
+  name = resolve name
+  if !mode = await getMode name
+    fs.mkdir path.dirname name
+    return mkdir name
+  # no-op if the directory already exists
+  if mode isnt S_IFDIR
+    uhoh "Path already exists: '#{name}'", 'PATH_EXISTS'
 
 #
 # Internal

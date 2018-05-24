@@ -1,5 +1,5 @@
-{S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
 {lstatSync, readdirSync, readlinkSync, readFileSync} = require 'fs'
+{S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
 errno = require './errno'
 path = require 'path'
 os = require 'os'
