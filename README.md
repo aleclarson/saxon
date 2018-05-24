@@ -18,6 +18,7 @@ const fs = require('saxon');
 - `isFile(name)`
 - `isDir(name)`
 - `mkdir(name)` Create a directory
+- `writer(name, opts)` Create a writable stream
 
 The `read` function takes a path or file descriptor as its first argument.
 The data encoding defaults to `"utf8"`.
@@ -32,6 +33,9 @@ It throws a `NOT_REAL` error if a resolved path does not exist.
 
 The `mkdir` function recursively creates any missing parent directories.
 It throws a `PATH_EXISTS` error if the path (or one of its parents) already exists and isn't a directory.
+
+The `writer` function creates a `WriteStream` object.
+Pass a number as the first argument to use a file descriptor.
 
 ## Blocking API
 

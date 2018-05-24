@@ -1,4 +1,4 @@
-{lstat, mkdir, readlink, readFile} = require 'graceful-fs'
+{lstat, mkdir, readlink, readFile, WriteStream} = require 'graceful-fs'
 {S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
 errno = require './errno'
 path = require 'path'
@@ -37,6 +37,9 @@ fs.mkdir = (name) ->
   # no-op if the directory already exists
   if mode isnt S_IFDIR
     uhoh "Path already exists: '#{name}'", 'PATH_EXISTS'
+
+fs.writer = (name, opts) ->
+  stream WriteStream, name, opts
 
 #
 # Internal
@@ -96,6 +99,12 @@ follow = (link, recursive) ->
         err = Error "Too many symlinks: '#{link}'"
         err.code = errno.LINK_LIMIT
         reject err
+
+stream = (ctr, name, opts) ->
+  if typeof name is 'number'
+    opts and opts.fd = name
+    new ctr null, opts or fd: name
+  else new ctr resolve(name), opts
 
 # Expose error codes.
 do ->
