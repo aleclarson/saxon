@@ -31,6 +31,9 @@ fs.follow = (name, recursive) ->
     follow name, recursive
   else name
 
+fs.exists = (name) ->
+  getMode(resolve name) isnt undefined
+
 fs.isFile = (name) ->
   getMode(resolve name) is S_IFREG
 

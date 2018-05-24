@@ -46,6 +46,7 @@ const fs = require('saxon/sync');
 - `read(name, enc)` Read an entire file into memory
 - `list(name)` Get the array of paths in a directory
 - `follow(name, recursive)` Resolve a symlink
+- `exists(name)`
 - `isFile(name)`
 - `isDir(name)`
 
