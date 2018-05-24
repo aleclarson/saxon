@@ -32,8 +32,8 @@ fs.isDir = (name) ->
 fs.mkdir = (name) ->
   name = resolve name
   if !mode = await getMode name
-    fs.mkdir path.dirname name
-    return mkdir name
+    fs.mkdir path.dirname(name)
+    return defer mkdir, name
   # no-op if the directory already exists
   if mode isnt S_IFDIR
     uhoh "Path already exists: '#{name}'", 'PATH_EXISTS'
