@@ -26,6 +26,9 @@ fs.follow = (name, recursive) ->
 fs.isFile = (name) ->
   (await getMode resolve name) is S_IFREG
 
+fs.isDir = (name) ->
+  (await getMode resolve name) is S_IFDIR
+
 #
 # Internal
 #
