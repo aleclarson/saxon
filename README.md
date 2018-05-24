@@ -47,6 +47,7 @@ const fs = require('saxon/sync');
 - `list(name)` Get the array of paths in a directory
 - `follow(name, recursive)` Resolve a symlink
 - `isFile(name)`
+- `isDir(name)`
 
 The `list` function throws a `NOT_REAL` error if the given path does not exist.
 It throws a `NOT_DIR` error if the given path is not a directory.

@@ -34,6 +34,9 @@ fs.follow = (name, recursive) ->
 fs.isFile = (name) ->
   getMode(resolve name) is S_IFREG
 
+fs.isDir = (name) ->
+  getMode(resolve name) is S_IFDIR
+
 #
 # Internal
 #
