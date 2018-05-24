@@ -32,7 +32,7 @@ fs.follow = (name, recursive) ->
   else name
 
 fs.isFile = (name) ->
-  getMode(resolve(name)) is S_IFREG
+  getMode(resolve name) is S_IFREG
 
 #
 # Internal

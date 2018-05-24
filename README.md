@@ -15,6 +15,7 @@ const fs = require('saxon');
 
 - `read(name, enc)` Read an entire file into memory
 - `follow(name, recursive)` Resolve a symlink
+- `isFile(name)`
 
 The `read` function takes a path or file descriptor as its first argument.
 The data encoding defaults to `"utf8"`.
