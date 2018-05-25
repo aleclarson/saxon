@@ -1,4 +1,4 @@
-{lstatSync, mkdirSync, readdirSync, readlinkSync, readFileSync, writeFileSync} = require 'fs'
+{lstatSync, mkdirSync, readdirSync, readlinkSync, readFileSync, rmdirSync, unlinkSync, writeFileSync} = require 'fs'
 {S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
 errno = require './errno'
 path = require 'path'
@@ -55,6 +55,15 @@ fs.mkdir = (name) ->
   if mode isnt S_IFDIR
     uhoh "Path already exists: '#{name}'", 'PATH_EXISTS'
 
+fs.remove = (name, recursive) ->
+  name = resolve name
+  if mode = getMode name
+    if mode is S_IFDIR
+      if recursive
+        removeTree name
+      else rmdirSync name
+    else unlinkSync name
+
 #
 # Internal
 #
@@ -104,6 +113,15 @@ follow = (link, recursive) ->
 
     if reads is 10
       uhoh "Too many symlinks: '#{link}'", 'LINK_LIMIT'
+
+# Recursive tree deletion.
+removeTree = (name) ->
+  for child in readdirSync name
+    child = path.join name, child
+    if getMode(child) is S_IFDIR
+      removeTree child
+    else unlinkSync child
+  rmdirSync name
 
 # Expose error codes.
 do ->

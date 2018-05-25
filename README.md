@@ -51,6 +51,10 @@ const fs = require('saxon/sync');
 - `isDir(name)`
 - `write(name, content)` Create or update a file
 - `mkdir(name)` Create a directory
+- `remove(name, recursive)` Destroy a path
 
 The `list` function throws a `NOT_REAL` error if the given path does not exist.
 It throws a `NOT_DIR` error if the given path is not a directory.
+
+The `remove` function unlinks a file, symlink, or empty directory.
+Pass `true` as the second argument to unlink non-empty directories.
