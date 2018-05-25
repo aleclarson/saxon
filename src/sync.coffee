@@ -1,4 +1,4 @@
-{lstatSync, readdirSync, readlinkSync, readFileSync} = require 'fs'
+{lstatSync, mkdirSync, readdirSync, readlinkSync, readFileSync} = require 'fs'
 {S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
 errno = require './errno'
 path = require 'path'
@@ -39,6 +39,15 @@ fs.isFile = (name) ->
 
 fs.isDir = (name) ->
   getMode(resolve name) is S_IFDIR
+
+fs.mkdir = (name) ->
+  name = resolve name
+  if !mode = getMode name
+    fs.mkdir path.dirname name
+    return mkdirSync name
+  # no-op if the directory already exists
+  if mode isnt S_IFDIR
+    uhoh "Path already exists: '#{name}'", 'PATH_EXISTS'
 
 #
 # Internal
