@@ -49,6 +49,7 @@ const fs = require('saxon/sync');
 - `exists(name)`
 - `isFile(name)`
 - `isDir(name)`
+- `write(name, content)` Create or update a file
 - `mkdir(name)` Create a directory
 
 The `list` function throws a `NOT_REAL` error if the given path does not exist.

@@ -1,4 +1,4 @@
-{lstatSync, mkdirSync, readdirSync, readlinkSync, readFileSync} = require 'fs'
+{lstatSync, mkdirSync, readdirSync, readlinkSync, readFileSync, writeFileSync} = require 'fs'
 {S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
 errno = require './errno'
 path = require 'path'
@@ -39,6 +39,12 @@ fs.isFile = (name) ->
 
 fs.isDir = (name) ->
   getMode(resolve name) is S_IFDIR
+
+fs.write = (name, content) ->
+  name = resolve name
+  if getMode(name) isnt S_IFDIR
+    return writeFileSync name, content
+  uhoh "Path is a directory: '#{name}'", 'NOT_FILE'
 
 fs.mkdir = (name) ->
   name = resolve name
