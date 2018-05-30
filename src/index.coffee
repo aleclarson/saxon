@@ -23,6 +23,9 @@ fs.follow = (name, recursive) ->
     follow name, recursive
   else Promise.resolve name
 
+fs.exists = (name) ->
+  (await getMode resolve name) isnt undefined
+
 fs.isFile = (name) ->
   (await getMode resolve name) is S_IFREG
 
