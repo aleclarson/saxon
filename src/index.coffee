@@ -1,4 +1,4 @@
-{lstat, mkdir, readlink, readFile, WriteStream} = require 'graceful-fs'
+{lstat, mkdir, readdir, readlink, readFile, WriteStream} = require 'graceful-fs'
 {S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
 errno = require './errno'
 path = require 'path'
@@ -14,6 +14,14 @@ fs.read = (name, enc) ->
     uhoh "Path is not readable: '#{name}'", 'NOT_FILE'
   enc = "utf8" if enc is undefined
   defer readFile, name, enc
+
+fs.list = (name) ->
+  name = resolve name
+  if !mode = await getMode name
+    uhoh "Path does not exist: '#{name}'", 'NOT_REAL'
+  if mode isnt S_IFDIR
+    uhoh "Path is not a directory: '#{name}'", 'NOT_DIR'
+  defer readdir, name
 
 fs.follow = (name, recursive) ->
   name = resolve name
