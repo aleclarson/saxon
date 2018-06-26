@@ -1,4 +1,4 @@
-{lstat, mkdir, readdir, readlink, readFile, WriteStream} = require 'graceful-fs'
+{lstat, mkdir, readdir, readlink, readFile, writeFile, WriteStream} = require 'graceful-fs'
 {S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
 errno = require './errno'
 path = require 'path'
@@ -39,6 +39,12 @@ fs.isFile = (name) ->
 
 fs.isDir = (name) ->
   (await getMode resolve name) is S_IFDIR
+
+fs.write = (name, content) ->
+  name = resolve name
+  if (await getMode name) isnt S_IFDIR
+    return writeFile name, content
+  uhoh "Path is a directory: '#{name}'", 'NOT_FILE'
 
 fs.mkdir = (name) ->
   name = resolve name

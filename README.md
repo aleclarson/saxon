@@ -18,6 +18,7 @@ const fs = require('saxon');
 - `isFile(name)`
 - `isDir(name)`
 - `mkdir(name)` Create a directory
+- `write(name, content)` Create or update a file
 - `writer(name, opts)` Create a writable stream
 
 The `read` function takes a path or file descriptor as its first argument.
