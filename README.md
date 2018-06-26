@@ -51,6 +51,7 @@ const fs = require('saxon/sync');
 - `exists(name)`
 - `isFile(name)`
 - `isDir(name)`
+- `rename(src, dest)`
 - `write(name, content)` Create or update a file
 - `mkdir(name)` Create a directory
 - `remove(name, recursive)` Destroy a path
