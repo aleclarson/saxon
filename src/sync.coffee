@@ -1,10 +1,13 @@
-{lstatSync, mkdirSync, readdirSync, readlinkSync, readFileSync, rmdirSync, unlinkSync, writeFileSync} = require 'fs'
+{lstatSync, mkdirSync, readdirSync, readlinkSync, readFileSync, rmdirSync, statSync, unlinkSync, writeFileSync} = require 'fs'
 {S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
 errno = require './errno'
 path = require 'path'
 os = require 'os'
 
 fs = exports
+
+fs.stat = (name) ->
+  statSync(resolve name)
 
 fs.read = (name, enc) ->
   name = resolve name

@@ -43,6 +43,7 @@ Pass a number as the first argument to use a file descriptor.
 const fs = require('saxon/sync');
 ```
 
+- `stat(name)` Get the stats of a file
 - `read(name, enc)` Read an entire file into memory
 - `list(name)` Get the array of paths in a directory
 - `follow(name, recursive)` Resolve a symlink
@@ -52,6 +53,8 @@ const fs = require('saxon/sync');
 - `write(name, content)` Create or update a file
 - `mkdir(name)` Create a directory
 - `remove(name, recursive)` Destroy a path
+
+The `stat` function follows symlinks to their real path.
 
 The `list` function throws a `NOT_REAL` error if the given path does not exist.
 It throws a `NOT_DIR` error if the given path is not a directory.
