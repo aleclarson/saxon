@@ -1,4 +1,4 @@
-{lstat, mkdir, readdir, readlink, readFile, writeFile, WriteStream} = require 'graceful-fs'
+{lstat, mkdir, readdir, readlink, readFile, ReadStream, writeFile, WriteStream} = require 'graceful-fs'
 {S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
 errno = require './errno'
 path = require 'path'
@@ -54,6 +54,9 @@ fs.mkdir = (name) ->
   # no-op if the directory already exists
   if mode isnt S_IFDIR
     uhoh "Path already exists: '#{name}'", 'PATH_EXISTS'
+
+fs.reader = (name, opts) ->
+  stream ReadStream, name, opts
 
 fs.writer = (name, opts) ->
   stream WriteStream, name, opts

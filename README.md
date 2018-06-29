@@ -14,6 +14,7 @@ const fs = require('saxon');
 ```
 
 - `read(name, enc)` Read an entire file into memory
+- `reader(name, opts)` Create a readable stream
 - `follow(name, recursive)` Resolve a symlink
 - `isFile(name)`
 - `isDir(name)`
