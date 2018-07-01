@@ -1,10 +1,13 @@
-{lstat, mkdir, readdir, readlink, readFile, ReadStream, writeFile, WriteStream} = require 'graceful-fs'
+{lstat, mkdir, readdir, readlink, readFile, ReadStream, stat, writeFile, WriteStream} = require 'graceful-fs'
 {S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
 errno = require './errno'
 path = require 'path'
 os = require 'os'
 
 fs = exports
+
+fs.stat = (name) ->
+  defer stat, resolve(name)
 
 fs.read = (name, enc) ->
   name = resolve name

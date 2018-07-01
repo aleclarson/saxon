@@ -13,6 +13,7 @@ Modern filesystem library.
 const fs = require('saxon');
 ```
 
+- `stat(name)` Get the stats of a file
 - `read(name, enc)` Read an entire file into memory
 - `reader(name, opts)` Create a readable stream
 - `follow(name, recursive)` Resolve a symlink
