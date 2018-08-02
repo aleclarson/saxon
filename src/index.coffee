@@ -35,7 +35,7 @@ fs.follow = (name, recursive) ->
   else Promise.resolve name
 
 fs.exists = (name) ->
-  (await getMode resolve name) isnt undefined
+  (await getMode resolve name) isnt null
 
 fs.isFile = (name) ->
   (await getMode resolve name) is S_IFREG
