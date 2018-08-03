@@ -1,4 +1,4 @@
-{lstatSync, mkdirSync, readdirSync, readlinkSync, readFileSync, renameSync, rmdirSync, statSync, unlinkSync, writeFileSync} = require 'fs'
+{lstatSync, mkdirSync, readdirSync, readlinkSync, readFileSync, renameSync, rmdirSync, statSync, symlinkSync, unlinkSync, writeFileSync} = require 'fs'
 {S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
 errno = require './errno'
 path = require 'path'
@@ -54,6 +54,12 @@ fs.rename = (src, dest) ->
 
   fs.mkdir path.dirname dest
   renameSync src, dest
+
+fs.link = (name, target) ->
+  name = resolve name
+  if getMode(name) is null
+    return symlinkSync name, target
+  uhoh "Path already exists: '#{dest}'", 'PATH_EXISTS'
 
 fs.write = (name, content) ->
   name = resolve name

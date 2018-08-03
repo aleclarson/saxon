@@ -54,6 +54,7 @@ const fs = require('saxon/sync');
 - `isFile(name)`
 - `isDir(name)`
 - `rename(src, dest)`
+- `link(name, target)` Create a symlink
 - `write(name, content)` Create or update a file
 - `mkdir(name)` Create a directory
 - `remove(name, recursive)` Destroy a path
