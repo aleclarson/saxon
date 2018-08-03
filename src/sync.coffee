@@ -1,4 +1,4 @@
-{lstatSync, mkdirSync, readdirSync, readlinkSync, readFileSync, renameSync, rmdirSync, statSync, symlinkSync, unlinkSync, writeFileSync} = require 'fs'
+{lstatSync, mkdirSync, readdirSync, readlinkSync, readFileSync, renameSync, rmdirSync, statSync, symlinkSync, unlinkSync, utimesSync, writeFileSync} = require 'fs'
 {S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
 errno = require './errno'
 path = require 'path'
@@ -43,17 +43,12 @@ fs.isFile = (name) ->
 fs.isDir = (name) ->
   getMode(resolve name) is S_IFDIR
 
-fs.rename = (src, dest) ->
-  src = resolve src
-  if !mode = getMode src
-    uhoh "Path does not exist: '#{src}'", 'NOT_REAL'
-
-  dest = resolve dest
-  if getMode dest
-    uhoh "Path already exists: '#{dest}'", 'PATH_EXISTS'
-
-  fs.mkdir path.dirname dest
-  renameSync src, dest
+fs.touch = (name) ->
+  name = resolve name
+  if getMode(name) is null
+    return writeFileSync name, ''
+  time = Date.now() / 1000
+  return utimesSync name, time, time
 
 fs.link = (name, target) ->
   name = resolve name
@@ -75,6 +70,18 @@ fs.mkdir = (name) ->
   # no-op if the directory already exists
   if mode isnt S_IFDIR
     uhoh "Path already exists: '#{name}'", 'PATH_EXISTS'
+
+fs.rename = (src, dest) ->
+  src = resolve src
+  if !mode = getMode src
+    uhoh "Path does not exist: '#{src}'", 'NOT_REAL'
+
+  dest = resolve dest
+  if getMode dest
+    uhoh "Path already exists: '#{dest}'", 'PATH_EXISTS'
+
+  fs.mkdir path.dirname dest
+  renameSync src, dest
 
 fs.remove = (name, recursive) ->
   name = resolve name

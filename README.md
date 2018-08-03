@@ -53,10 +53,11 @@ const fs = require('saxon/sync');
 - `exists(name)`
 - `isFile(name)`
 - `isDir(name)`
-- `rename(src, dest)`
+- `touch(name)` Create a file or update its mtime
 - `link(name, target)` Create a symlink
 - `write(name, content)` Create or update a file
 - `mkdir(name)` Create a directory
+- `rename(src, dest)`
 - `remove(name, recursive)` Destroy a path
 
 The `stat` function follows symlinks to their real path.
