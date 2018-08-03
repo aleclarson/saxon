@@ -59,7 +59,7 @@ fs.link = (name, target) ->
   name = resolve name
   if getMode(name) is null
     return symlinkSync name, target
-  uhoh "Path already exists: '#{dest}'", 'PATH_EXISTS'
+  uhoh "Path already exists: '#{name}'", 'PATH_EXISTS'
 
 fs.write = (name, content) ->
   name = resolve name
