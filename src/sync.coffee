@@ -58,7 +58,7 @@ fs.rename = (src, dest) ->
 fs.link = (name, target) ->
   name = resolve name
   if getMode(name) is null
-    return symlinkSync name, target
+    return symlinkSync target, name
   uhoh "Path already exists: '#{name}'", 'PATH_EXISTS'
 
 fs.write = (name, content) ->
