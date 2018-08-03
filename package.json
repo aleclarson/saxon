@@ -1,6 +1,6 @@
 {
   "name": "saxon",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "main": "js/index",
   "scripts": {
     "build": "coffee-build src -o js",
