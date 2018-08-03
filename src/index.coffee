@@ -46,7 +46,7 @@ fs.isDir = (name) ->
 fs.write = (name, content) ->
   name = resolve name
   if (await getMode name) isnt S_IFDIR
-    return writeFile name, content
+    return defer writeFile, name, content
   uhoh "Path is a directory: '#{name}'", 'NOT_FILE'
 
 fs.mkdir = (name) ->
