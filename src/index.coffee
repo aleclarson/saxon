@@ -52,7 +52,7 @@ fs.write = (name, content) ->
 fs.mkdir = (name) ->
   name = resolve name
   if !mode = await getMode name
-    fs.mkdir path.dirname(name)
+    await fs.mkdir path.dirname(name)
     return defer mkdir, name
   # no-op if the directory already exists
   if mode isnt S_IFDIR
