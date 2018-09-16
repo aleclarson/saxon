@@ -54,6 +54,7 @@ const fs = require('saxon/sync');
 - `isFile(name)`
 - `isDir(name)`
 - `touch(name)` Create a file or update its mtime
+- `chmod(name, mode)` Change the permissions of a file
 - `link(name, target)` Create a symlink
 - `write(name, content)` Create or update a file
 - `mkdir(name)` Create a directory

@@ -1,4 +1,4 @@
-{lstatSync, mkdirSync, readdirSync, readlinkSync, readFileSync, renameSync, rmdirSync, statSync, symlinkSync, unlinkSync, utimesSync, writeFileSync} = require 'fs'
+{chmodSync, lstatSync, mkdirSync, readdirSync, readlinkSync, readFileSync, renameSync, rmdirSync, statSync, symlinkSync, unlinkSync, utimesSync, writeFileSync} = require 'fs'
 {S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
 errno = require './errno'
 path = require 'path'
@@ -49,6 +49,14 @@ fs.touch = (name) ->
     return writeFileSync name, ''
   time = Date.now() / 1000
   return utimesSync name, time, time
+
+fs.chmod = (name, mode) ->
+  name = resolve name
+  if !mode = getMode name
+    uhoh "Path does not exist: '#{name}'", 'NOT_REAL'
+  if mode is S_IFDIR
+    uhoh "Path is a directory: '#{name}'", 'NOT_FILE'
+  return chmodSync name, mode
 
 fs.link = (name, target) ->
   name = resolve name
