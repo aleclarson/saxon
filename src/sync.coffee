@@ -43,6 +43,9 @@ fs.isFile = (name) ->
 fs.isDir = (name) ->
   getMode(resolve name) is S_IFDIR
 
+fs.isLink = (name) ->
+  getMode(resolve name) is S_IFLNK
+
 fs.touch = (name) ->
   name = resolve name
   if getMode(name) is null

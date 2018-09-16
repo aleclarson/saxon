@@ -53,6 +53,7 @@ const fs = require('saxon/sync');
 - `exists(name)`
 - `isFile(name)`
 - `isDir(name)`
+- `isLink(name)` Return true if given name is a symlink
 - `touch(name)` Create a file or update its mtime
 - `chmod(name, mode)` Change the permissions of a file
 - `link(name, target)` Create a symlink
