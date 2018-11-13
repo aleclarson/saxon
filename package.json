@@ -5,8 +5,7 @@
   "repository": "aleclarson/saxon",
   "description": "Modern filesystem library",
   "scripts": {
-    "build": "coffee-build src -o js",
-    "prepublishOnly": "prepv -i || true"
+    "build": "coffee-build src -o js"
   },
   "dependencies": {
     "graceful-fs": "^4.1.11"
