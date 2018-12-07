@@ -2,8 +2,9 @@
   "name": "saxon",
   "version": "0.1.13",
   "main": "js/index",
-  "repository": "aleclarson/saxon",
   "description": "Modern filesystem library",
+  "repository": "aleclarson/saxon",
+  "license": "MIT",
   "scripts": {
     "build": "coffee-build src -o js"
   },
