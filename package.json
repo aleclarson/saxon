@@ -5,6 +5,11 @@
   "description": "Modern filesystem library",
   "repository": "aleclarson/saxon",
   "license": "MIT",
+  "files": [
+    "js",
+    "*.js",
+    "*.d.ts"
+  ],
   "scripts": {
     "build": "coffee-build src -o js"
   },
