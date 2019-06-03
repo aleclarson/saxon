@@ -8,6 +8,8 @@ declare const saxon: {
   read(name: string): string
   read(name: string, enc: null): Buffer
   read(name: string, enc: string): any
+  /** Read and parse a .json file */
+  readJson(name: string): any
   /** Get the array of filenames in a directory */
   list(name: string): string[]
   /** Resolve a symlink */

@@ -18,6 +18,9 @@ fs.read = (name, enc) ->
   enc = "utf8" if enc is undefined
   readFileSync name, enc
 
+fs.readJson = (name) ->
+  JSON.parse fs.read name
+
 fs.list = (name) ->
   name = resolve name
   if !mode = getMode name
