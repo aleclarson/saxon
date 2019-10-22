@@ -1,4 +1,4 @@
-{lchmodSync, lstatSync, mkdirSync, readdirSync, readlinkSync, readFileSync, renameSync, rmdirSync, statSync, symlinkSync, unlinkSync, utimesSync, writeFileSync} = require 'fs'
+{chmodSync, lstatSync, mkdirSync, readdirSync, readlinkSync, readFileSync, renameSync, rmdirSync, statSync, symlinkSync, unlinkSync, utimesSync, writeFileSync} = require 'fs'
 {S_IFMT, S_IFREG, S_IFDIR, S_IFLNK} = require('fs').constants
 errno = require './errno'
 path = require 'path'
@@ -62,7 +62,7 @@ fs.chmod = (name, mode) ->
     uhoh "Path does not exist: '#{name}'", 'NOT_REAL'
   if mode is S_IFDIR
     uhoh "Path is a directory: '#{name}'", 'NOT_FILE'
-  return lchmodSync name, mode
+  return chmodSync name, mode
 
 fs.link = (name, target) ->
   name = resolve name
