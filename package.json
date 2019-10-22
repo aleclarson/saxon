@@ -1,6 +1,6 @@
 {
   "name": "saxon",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "main": "js/index",
   "description": "Modern filesystem library",
   "repository": "aleclarson/saxon",
