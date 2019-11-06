@@ -9,6 +9,9 @@ fs = exports
 fs.stat = (name) ->
   statSync(resolve name)
 
+fs.lstat = (name) ->
+  lstatSync(resolve name)
+
 fs.read = (name, enc) ->
   name = resolve name
   if !mode = getMode name

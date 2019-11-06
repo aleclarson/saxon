@@ -47,6 +47,7 @@ const fs = require('saxon/sync');
 ```
 
 - `stat(name)` Get the stats of a file
+- `lstat(name)`
 - `read(name, enc)` Read an entire file into memory
 - `readJson(name)`
 - `list(name)` Get the array of paths in a directory
