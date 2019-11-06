@@ -4,6 +4,7 @@ import { ErrorCode } from './errno'
 declare const saxon: {
   /** Get the stats of a file */
   stat(name: string): fs.Stats
+  lstat(name: string): fs.Stats
   /** Read an entire file into memory */
   read(name: string): string
   read(name: string, enc: null): Buffer
