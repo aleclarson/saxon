@@ -81,10 +81,14 @@ fs.write = (name, content) ->
 
 fs.mkdir = (name) ->
   name = resolve name
+
   if !mode = getMode name
     fs.mkdir path.dirname name
     return mkdirSync name
-  # no-op if the directory already exists
+
+  if mode is S_IFLNK
+    mode = getMode follow name, true
+
   if mode isnt S_IFDIR
     uhoh "Path already exists: '#{name}'", 'PATH_EXISTS'
 
