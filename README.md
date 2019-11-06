@@ -62,12 +62,19 @@ const fs = require('saxon/sync');
 - `write(name, content)` Create or update a file
 - `mkdir(name)` Create a directory
 - `rename(src, dest)`
+- `copy(src, dest)` Copy a file or directory
 - `remove(name, recursive)` Destroy a path
 
 The `stat` function follows symlinks to their real path.
 
 The `list` function throws a `NOT_REAL` error if the given path does not exist.
 It throws a `NOT_DIR` error if the given path is not a directory.
+
+The `copy` function throws a `NOT_REAL` error if the given `src` path does not exist.
+When the `src` path is a file and the `dest` path is a directory, the `src` path is
+copied into the `dest` directory. When both are directories, the `src` directory is
+merged into the `dest` directory, rather than replacing it entirely. Symlinks are
+preserved, but their target paths are never changed.
 
 The `remove` function unlinks a file, symlink, or empty directory.
 Pass `true` as the second argument to unlink non-empty directories.

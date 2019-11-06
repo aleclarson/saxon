@@ -109,6 +109,34 @@ fs.remove = (name, recursive) ->
       else rmdirSync name
     else unlinkSync name
 
+fs.copy = (srcPath, destPath) ->
+  srcPath = resolve srcPath
+  destPath = resolve destPath
+
+  unless mode = getMode srcPath
+    uhoh "Cannot `copy` non-existent path: '#{srcPath}'", 'NOT_REAL'
+
+  if mode is S_IFDIR
+    return copyTree srcPath, destPath
+
+  destMode = getMode destPath
+
+  if destMode is S_IFDIR
+    destPath = path.join destPath, path.basename srcPath
+    destMode = getMode destPath
+
+  if destMode
+    if destMode is S_IFDIR
+      uhoh "Cannot overwrite directory path: '#{destPath}'", 'PATH_EXISTS'
+    unlinkSync destPath
+
+  # Create missing parent directories.
+  fs.mkdir path.dirname destPath
+
+  if mode is S_IFLNK
+  then copyLink srcPath, destPath
+  else writeFileSync destPath, readFileSync srcPath
+
 #
 # Internal
 #
@@ -158,6 +186,40 @@ follow = (link, recursive) ->
 
     if reads is 10
       uhoh "Too many symlinks: '#{link}'", 'LINK_LIMIT'
+
+# Overwrite the `destPath` with contents of the `srcPath`.
+copyFile = (srcPath, destPath) ->
+  mode = getMode srcPath
+
+  if mode is S_IFDIR
+    return copyTree srcPath, destPath
+
+  if destMode = getMode destPath
+    if destMode is S_IFDIR
+    then removeTree destPath
+    else unlinkSync destPath
+
+  # Create missing parent directories.
+  fs.mkdir path.dirname destPath
+
+  if mode is S_IFLNK
+  then symlinkSync readlinkSync(srcPath), destPath
+  else writeFileSync destPath, readFileSync srcPath
+
+# Recursive tree copies.
+copyTree = (srcPath, destPath) ->
+  destMode = getMode destPath
+
+  # Remove the file under our new path, if needed.
+  if destMode and destMode isnt S_IFDIR
+    unlinkSync destPath
+
+  # Create the directory, if needed.
+  if destMode isnt S_IFDIR
+    fs.mkdir destPath
+
+  readdirSync(srcPath).forEach (file) ->
+    copyFile path.join(srcPath, file), path.join(destPath, file)
 
 # Recursive tree deletion.
 removeTree = (name) ->

@@ -31,6 +31,8 @@ declare const saxon: {
   mkdir(name: string): void
   /** Rename a path */
   rename(src: string, dest: string): void
+  /** Copy a file or directory */
+  copy(src: string, dest: string): void
   /** Destroy a path */
   remove(name: string, recursive?: boolean): void
 } & ErrorCode
