@@ -52,6 +52,9 @@ fs.isDir = (name) ->
 fs.isLink = (name) ->
   getMode(resolve name) is S_IFLNK
 
+fs.readPerms = (name) ->
+  '0' + (fs.stat(name).mode & parseInt('777', 8)).toString(8)
+
 fs.touch = (name) ->
   name = resolve name
   if getMode(name) is null

@@ -50,6 +50,7 @@ const fs = require('saxon/sync');
 - `lstat(name)`
 - `read(name, enc)` Read an entire file into memory
 - `readJson(name)`
+- `readPerms(name)` Get file permissions in string form (eg: `"0777"`)
 - `list(name)` Get the array of paths in a directory
 - `follow(name, recursive)` Resolve a symlink
 - `exists(name)`
