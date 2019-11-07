@@ -11,6 +11,8 @@ declare const saxon: {
   read(name: string, enc: string): any
   /** Read and parse a .json file */
   readJson(name: string): any
+  /** Get file permissions like "0777" */
+  readPerms(name: string): string
   /** Get the array of filenames in a directory */
   list(name: string): string[]
   /** Resolve a symlink */
