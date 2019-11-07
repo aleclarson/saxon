@@ -62,13 +62,13 @@ fs.touch = (name) ->
   time = Date.now() / 1000
   return utimesSync name, time, time
 
-fs.chmod = (name, mode) ->
+fs.chmod = (name, value) ->
   name = resolve name
   if !mode = getMode name
     uhoh "Path does not exist: '#{name}'", 'NOT_REAL'
   if mode is S_IFDIR
     uhoh "Path is a directory: '#{name}'", 'NOT_FILE'
-  return chmodSync name, mode
+  return chmodSync name, value
 
 fs.link = (name, target) ->
   name = resolve name
