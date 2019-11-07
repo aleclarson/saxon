@@ -137,12 +137,7 @@ fs.copy = (srcPath, destPath) ->
     then uhoh "Cannot overwrite directory path: '#{destPath}'", 'PATH_EXISTS'
     else unlinkSync destPath
 
-  # Create missing parent directories.
-  fs.mkdir path.dirname destPath
-
-  if mode is S_IFLNK
-  then symlinkSync readlinkSync(srcPath), destPath
-  else writeFileSync destPath, readFileSync srcPath
+  copyFile srcPath, destPath
 
 #
 # Internal
@@ -194,39 +189,38 @@ follow = (link, recursive) ->
     if reads is 10
       uhoh "Too many symlinks: '#{link}'", 'LINK_LIMIT'
 
-# Overwrite the `destPath` with contents of the `srcPath`.
 copyFile = (srcPath, destPath) ->
-  mode = getMode srcPath
-
-  if mode is S_IFDIR
-    return copyTree srcPath, destPath
-
-  if destMode = getMode destPath
-    if destMode is S_IFDIR
-    then removeTree destPath
-    else unlinkSync destPath
-
-  # Create missing parent directories.
   fs.mkdir path.dirname destPath
-
   if mode is S_IFLNK
-  then symlinkSync readlinkSync(srcPath), destPath
-  else writeFileSync destPath, readFileSync srcPath
+    return symlinkSync readlinkSync(srcPath), destPath
+  writeFileSync destPath, readFileSync srcPath
+  chmodSync destPath, fs.readPerms srcPath
 
 # Recursive tree copies.
-copyTree = (srcPath, destPath) ->
-  destMode = getMode destPath
+copyTree = (srcDir, destDir) ->
+  destMode = getMode destDir
 
   # Remove the file under our new path, if needed.
   if destMode and destMode isnt S_IFDIR
-    unlinkSync destPath
+    unlinkSync destDir
 
   # Create the directory, if needed.
   if destMode isnt S_IFDIR
-    fs.mkdir destPath
+    fs.mkdir destDir
 
-  readdirSync(srcPath).forEach (file) ->
-    copyFile path.join(srcPath, file), path.join(destPath, file)
+  readdirSync(srcDir).forEach (file) ->
+    srcPath = path.join srcDir, file
+    destPath = path.join destDir, file
+
+    if getMode(srcPath) is S_IFDIR
+      return copyTree srcPath, destPath
+
+    if destMode = getMode destPath
+      if destMode is S_IFDIR
+      then removeTree destPath
+      else unlinkSync destPath
+
+    copyFile srcPath, destPath
 
 # Recursive tree deletion.
 removeTree = (name) ->
