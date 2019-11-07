@@ -97,7 +97,7 @@ fs.mkdir = (name) ->
 
 fs.rename = (src, dest) ->
   src = resolve src
-  if !mode = getMode src
+  if !getMode src
     uhoh "Path does not exist: '#{src}'", 'NOT_REAL'
 
   dest = resolve dest
