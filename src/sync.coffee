@@ -191,7 +191,7 @@ follow = (link, recursive) ->
 
 copyFile = (srcPath, destPath) ->
   fs.mkdir path.dirname destPath
-  if mode is S_IFLNK
+  if getMode(srcPath) is S_IFLNK
     return symlinkSync readlinkSync(srcPath), destPath
   writeFileSync destPath, readFileSync srcPath
   chmodSync destPath, fs.readPerms srcPath
