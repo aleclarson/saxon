@@ -131,14 +131,14 @@ fs.copy = (srcPath, destPath) ->
 
   if destMode
     if destMode is S_IFDIR
-      uhoh "Cannot overwrite directory path: '#{destPath}'", 'PATH_EXISTS'
-    unlinkSync destPath
+    then uhoh "Cannot overwrite directory path: '#{destPath}'", 'PATH_EXISTS'
+    else unlinkSync destPath
 
   # Create missing parent directories.
   fs.mkdir path.dirname destPath
 
   if mode is S_IFLNK
-  then copyLink srcPath, destPath
+  then symlinkSync readlinkSync(srcPath), destPath
   else writeFileSync destPath, readFileSync srcPath
 
 #
