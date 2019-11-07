@@ -1,4 +1,4 @@
-# saxon v0.2.5
+# saxon v0.2.6
 
 Modern filesystem library.
 
