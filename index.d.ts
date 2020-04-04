@@ -26,8 +26,10 @@ declare const saxon: {
   read(name: string, enc?: 'utf8'): Promise<string>
   read(name: string, enc: null): Promise<Buffer>
   read(name: string, enc: string): Promise<any>
+  list(name: string): Promise<string[]>
   reader(name: string, opts?: ReaderOptions): fs.ReadStream
   follow(name: string, recursive?: boolean): Promise<string>
+  exists(name: string): Promise<boolean>
   isFile(name: string): Promise<boolean>
   isDir(name: string): Promise<boolean>
   mkdir(name: string): Promise<void>
