@@ -18,6 +18,9 @@ fs.read = (name, enc) ->
   enc = "utf8" if enc is undefined
   defer readFile, name, enc
 
+fs.readJson = (name) ->
+  JSON.parse await fs.read name
+
 fs.list = (name) ->
   name = resolve name
   if !mode = await getMode name
