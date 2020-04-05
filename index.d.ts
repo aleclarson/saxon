@@ -21,6 +21,10 @@ export type WriterOptions = {
   start?: number;
 }
 
+export type ReadStream = fs.ReadStream & { path: string }
+
+export type WriteStream = fs.WriteStream & { path: string }
+
 declare const saxon: {
   stat(name: string): Promise<fs.Stats>
   read(name: string, enc?: 'utf8'): Promise<string>
@@ -28,14 +32,14 @@ declare const saxon: {
   read(name: string, enc: string): Promise<any>
   readJson<T = any>(name: string): Promise<T>
   list(name: string): Promise<string[]>
-  reader(name: string, opts?: ReaderOptions): fs.ReadStream
+  reader(name: string, opts?: ReaderOptions): ReadStream
   follow(name: string, recursive?: boolean): Promise<string>
   exists(name: string): Promise<boolean>
   isFile(name: string): Promise<boolean>
   isDir(name: string): Promise<boolean>
   mkdir(name: string): Promise<void>
   write(name: string, content: string|Buffer): Promise<void>
-  writer(name: string, opts?: WriterOptions): fs.WriteStream
+  writer(name: string, opts?: WriterOptions): WriteStream
 } & ErrorCode
 
 export default saxon
