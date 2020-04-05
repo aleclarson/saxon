@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import { ErrorCode } from './errno'
 
-type ReaderOptions = {
+export type ReaderOptions = {
   flags?: string;
   encoding?: string;
   fd?: number;
@@ -12,7 +12,7 @@ type ReaderOptions = {
   highWaterMark?: number;
 }
 
-type WriterOptions = {
+export type WriterOptions = {
   flags?: string;
   encoding?: string;
   fd?: number;
@@ -37,4 +37,5 @@ declare const saxon: {
   write(name: string, content: string|Buffer): Promise<void>
   writer(name: string, opts?: WriterOptions): fs.WriteStream
 } & ErrorCode
-export = saxon
+
+export default saxon
