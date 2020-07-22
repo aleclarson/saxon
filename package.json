@@ -11,7 +11,8 @@
     "*.d.ts"
   ],
   "scripts": {
-    "build": "coffee-build src -o js"
+    "build": "coffee-build src -o js",
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {
     "graceful-fs": "^4.1.11"
