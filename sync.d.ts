@@ -29,7 +29,7 @@ declare const saxon: {
   /** Create a symlink */
   link(name: string, target: string): void
   /** Create or update a file */
-  write(name: string, content: string | Buffer): Promise<void>
+  write(name: string, content: string | Buffer): void
   /** Create a directory */
   mkdir(name: string): void
   /** Rename a path */
