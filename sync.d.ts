@@ -31,7 +31,7 @@ declare const saxon: {
   /** Create or update a file */
   write(name: string, content: string | Buffer): void
   /** Create a directory */
-  mkdir(name: string): void
+  mkdir(name: string, mode?: number|string): void
   /** Rename a path */
   rename(src: string, dest: string): void
   /** Copy a file or directory */

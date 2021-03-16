@@ -14,9 +14,9 @@ fs.lstat = (name) ->
 
 fs.read = (name, enc) ->
   name = resolve name
-  if !mode = getMode name
+  if !type = getFileType name
     uhoh "Path does not exist: '#{name}'", 'NOT_REAL'
-  if mode is S_IFDIR
+  if type is S_IFDIR
     uhoh "Path is not readable: '#{name}'", 'NOT_FILE'
   enc = "utf8" if enc is undefined
   readFileSync name, enc
@@ -26,82 +26,82 @@ fs.readJson = (name) ->
 
 fs.list = (name) ->
   name = resolve name
-  if !mode = getMode name
+  if !type = getFileType name
     uhoh "Path does not exist: '#{name}'", 'NOT_REAL'
-  if mode isnt S_IFDIR
+  if type isnt S_IFDIR
     uhoh "Path is not a directory: '#{name}'", 'NOT_DIR'
   readdirSync name
 
 fs.follow = (name, recursive) ->
   name = resolve name
-  if !mode = getMode name
+  if !type = getFileType name
     uhoh "Path does not exist: '#{name}'", 'NOT_REAL'
-  if mode is S_IFLNK
+  if type is S_IFLNK
     follow name, recursive
   else name
 
 fs.exists = (name) ->
-  getMode(resolve name) isnt null
+  getFileType(resolve name) isnt null
 
 fs.isFile = (name) ->
-  getMode(resolve name) is S_IFREG
+  getFileType(resolve name) is S_IFREG
 
 fs.isDir = (name) ->
-  getMode(resolve name) is S_IFDIR
+  getFileType(resolve name) is S_IFDIR
 
 fs.isLink = (name) ->
-  getMode(resolve name) is S_IFLNK
+  getFileType(resolve name) is S_IFLNK
 
 fs.readPerms = (name) ->
   '0' + (fs.stat(name).mode & parseInt('777', 8)).toString(8)
 
 fs.touch = (name) ->
   name = resolve name
-  if getMode(name) is null
+  if getFileType(name) is null
     return writeFileSync name, ''
   time = Date.now() / 1000
   return utimesSync name, time, time
 
-fs.chmod = (name, value) ->
+fs.chmod = (name, mode) ->
   name = resolve name
-  if !mode = getMode name
+  if !type = getFileType name
     uhoh "Path does not exist: '#{name}'", 'NOT_REAL'
-  if mode is S_IFDIR
+  if type is S_IFDIR
     uhoh "Path is a directory: '#{name}'", 'NOT_FILE'
-  return chmodSync name, value
+  return chmodSync name, mode
 
 fs.link = (name, target) ->
   name = resolve name
-  if getMode(name) is null
+  if getFileType(name) is null
     return symlinkSync target, name
   uhoh "Path already exists: '#{name}'", 'PATH_EXISTS'
 
 fs.write = (name, content) ->
   name = resolve name
-  if getMode(name) isnt S_IFDIR
+  if getFileType(name) isnt S_IFDIR
     return writeFileSync name, content
   uhoh "Path is a directory: '#{name}'", 'NOT_FILE'
 
-fs.mkdir = (name) ->
+fs.mkdir = (name, mode) ->
   name = resolve name
 
-  if !mode = getMode name
+  if !type = getFileType name
     fs.mkdir path.dirname name
-    return mkdirSync name
+    return mkdirSync name, {mode}
 
-  if mode is S_IFLNK
-    mode = getMode follow name, true
+  if type is S_IFLNK
+    type = getFileType follow name, true
 
-  if mode isnt S_IFDIR
+  if type isnt S_IFDIR
     uhoh "Path already exists: '#{name}'", 'PATH_EXISTS'
 
 fs.rename = (src, dest) ->
   src = resolve src
-  if !getMode src
+  if !getFileType src
     uhoh "Path does not exist: '#{src}'", 'NOT_REAL'
 
   dest = resolve dest
-  if getMode dest
+  if getFileType dest
     uhoh "Path already exists: '#{dest}'", 'PATH_EXISTS'
 
   fs.mkdir path.dirname dest
@@ -109,8 +109,8 @@ fs.rename = (src, dest) ->
 
 fs.remove = (name, recursive) ->
   name = resolve name
-  if mode = getMode name
-    if mode is S_IFDIR
+  if type = getFileType name
+    if type is S_IFDIR
       if recursive
         removeTree name
       else rmdirSync name
@@ -120,17 +120,17 @@ fs.copy = (srcPath, destPath) ->
   srcPath = resolve srcPath
   destPath = resolve destPath
 
-  unless mode = getMode srcPath
+  unless type = getFileType srcPath
     uhoh "Cannot `copy` non-existent path: '#{srcPath}'", 'NOT_REAL'
 
-  if mode is S_IFDIR
+  if type is S_IFDIR
     return copyTree srcPath, destPath
 
-  destMode = getMode destPath
+  destMode = getFileType destPath
 
   if destMode is S_IFDIR
     destPath = path.join destPath, path.basename srcPath
-    destMode = getMode destPath
+    destMode = getFileType destPath
 
   if destMode
     if destMode is S_IFDIR
@@ -154,7 +154,7 @@ resolve = (name) ->
     os.homedir() + name.slice(1)
   else path.resolve name
 
-getMode = (name) ->
+getFileType = (name) ->
   try lstatSync(name).mode & S_IFMT
   catch e then null
 
@@ -180,10 +180,10 @@ follow = (link, recursive) ->
     if !recursive
       return name
 
-    if !mode = getMode name
+    if !type = getFileType name
       uhoh "Symlink leads nowhere: '#{link}'", 'NOT_REAL'
 
-    if mode isnt S_IFLNK
+    if type isnt S_IFLNK
       return name
 
     if reads is 10
@@ -191,14 +191,14 @@ follow = (link, recursive) ->
 
 copyFile = (srcPath, destPath) ->
   fs.mkdir path.dirname destPath
-  if getMode(srcPath) is S_IFLNK
+  if getFileType(srcPath) is S_IFLNK
     return symlinkSync readlinkSync(srcPath), destPath
   writeFileSync destPath, readFileSync srcPath
   chmodSync destPath, fs.readPerms srcPath
 
 # Recursive tree copies.
 copyTree = (srcDir, destDir) ->
-  destMode = getMode destDir
+  destMode = getFileType destDir
 
   # Remove the file under our new path, if needed.
   if destMode and destMode isnt S_IFDIR
@@ -212,10 +212,10 @@ copyTree = (srcDir, destDir) ->
     srcPath = path.join srcDir, file
     destPath = path.join destDir, file
 
-    if getMode(srcPath) is S_IFDIR
+    if getFileType(srcPath) is S_IFDIR
       return copyTree srcPath, destPath
 
-    if destMode = getMode destPath
+    if destMode = getFileType destPath
       if destMode is S_IFDIR
       then removeTree destPath
       else unlinkSync destPath
@@ -226,7 +226,7 @@ copyTree = (srcDir, destDir) ->
 removeTree = (name) ->
   for child in readdirSync name
     child = path.join name, child
-    if getMode(child) is S_IFDIR
+    if getFileType(child) is S_IFDIR
       removeTree child
     else unlinkSync child
   rmdirSync name
